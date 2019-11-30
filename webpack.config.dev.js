@@ -1,20 +1,32 @@
 import path from 'path';
+import webpack from 'webpack';
+
 export default {
-  entry: path.join(__dirname, '/client/index.js'),
+  devtool: 'eval-source-map',
+  entry: [
+    'webpack-hot-middleware/client',
+    path.join(__dirname, '/client/index.js')
+  ],
   output: {
-    path: '/'
+    path: '/',
+    filename: "bundle.js"
   },
+  plugins: [
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  ],
   mode: 'development',
   module: {
     rules: [
       {
         test: /\.js$/,
         include: path.join(__dirname, 'client'),
-        use: 'babel-loader'
+        use: ['babel-loader', 'react-hot-loader/webpack']
       }
     ]
   },
   resolve: {
-    extensions: [ '.js'  ]
+    extensions: ['.js']
   }
 }

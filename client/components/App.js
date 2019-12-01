@@ -5,7 +5,7 @@ class App extends Component {
     return(
       <div>
        <h1>
-         Welcome to world of fast money fast, fast cars, big diamons ssaffasfafasf....
+         Welcome to world of fast money fast, fast cars, big diamonds, big chains of...
        </h1>
       </div>
     )

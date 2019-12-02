@@ -19,6 +19,7 @@
     "express": "^4.17.1",
     "nodemon": "^2.0.1",
     "react-hot-loader": "^4.12.18",
+    "react-router-dom": "^5.1.2",
     "webpack-hot-middleware": "^2.25.0"
   },
   "dependencies": {

@@ -16,7 +16,7 @@ render(
   <Router>
     <App/>
     <Switch>
-      <Route path="/">
+      <Route exact path="/">
         <Greetings />
       </Route>
       <Route path="/signup">

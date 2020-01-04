@@ -1,70 +1,76 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { signUpReq } from '../actions/signUpReq';
 
 class SignUp extends Component {
-state = {
-  username: '',
-  email: '',
-  password: '',
-}
+  state = {
+    errors: {},
+    username: '',
+    email: '',
+    password: '',
+  }
 
-onChangeUsername = event => {
-  this.setState({username: event.target.value });
-}
+  onChange = e => {
+    this.setState({[e.target.name]: event.target.value });
+  }
 
-onChangeEmail = event => {
-  this.setState({email: event.target.value });
-}
+  onSubmit = async (e) => {
+    this.setState({ errors: {} });
+    e.preventDefault();
+    const res = await this.props.signUpReq(this.state)
+    const errData = await res.json();
+    return errData && this.setState({errors: data}) 
+  }
 
-onChangePassword = event => {
-  this.setState({password: event.target.value });
-}
-
-onSubmit = (e) => {
-  e.prevent.default();
-  console.log(this.state);
-}
-
-render() {
-  return(
-    <div className='container'>
-      <div className='"row justify-content-md-center"'>
-        <h1> Sign Up </h1>
-        <div className='col-md col-md-offset-2'>
-          <form>
-            <div className="form-group">
-              <label htmlFor="exampleInputEmail1">Username</label>
-              <input
-                type="username"
-                className="form-control"
-                placeholder="Enter email"
-                onChange={this.onChangeUsername}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="exampleInputEmail1">Email address</label>
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Enter email"
-                onChange={this.onChangeEmail}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="exampleInputPassword1">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                onChange={this.onChangePassword}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary" onClick={this.onSubmit}>Submit</button>
-          </form>
+  render() {
+    return(
+      <div className='container'>
+        <div className='"row justify-content-md-center"'>
+          <h1> Sign Up </h1>
+          <div className='col-md col-md-offset-2'>
+            <form>
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  className="form-control"
+                  placeholder="Enter email"
+                  onChange={this.onChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">Email address</label>
+                <input
+                  type="email"
+                  name="email"
+                  className="form-control"
+                  placeholder="Enter email"
+                  onChange={this.onChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="exampleInputPassword1">Password</label>
+                <input
+                  name="password"
+                  type="password"
+                  className="form-control"
+                  placeholder="Password"
+                  onChange={this.onChange}
+                />
+              </div>
+              <button className="btn btn-primary" onClick={this.onSubmit}>Submit</button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-  )
- }
+    )
+  }
 }
 
-export default SignUp;
+SignUp.propTypes = {
+ signUpReq: PropTypes.func.isRequired
+}
+
+export default connect(null, { signUpReq })(SignUp);

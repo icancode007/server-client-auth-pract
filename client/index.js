@@ -25,16 +25,10 @@ render(
     <Router>
       <App/>
       <Switch>
-        <Route exact path="/">
-          <Greetings />
-        </Route>
-        <Route path="/signup">
-          <SignUp />
-        </Route>
-        <Route path="/signIn">
-          <SignIn />
-        </Route>
+        <Route exact path="/" component={Greetings} />
+        <Route path="/signup" component={SignUp} />
+        <Route path="/signIn" component={SignIn} />
       </Switch>
     </Router>
-  </Provider>  
+  </Provider>
   , document.getElementById('app'));

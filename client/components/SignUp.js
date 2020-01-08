@@ -5,6 +5,7 @@ import { signUpReq } from '../actions/signUpReq';
 import FormInput from './FormInput';
 import classnames  from 'classnames';
 import validateInput from '../../server/shared/validator';
+import { withRouter } from "react-router-dom"
 
 class SignUp extends Component {
   state = {
@@ -13,24 +14,37 @@ class SignUp extends Component {
     email: '',
     password: '',
     isLoading: false,
+    auth: false
+  }
+
+  componentDidUpdate(){
+    if(this.state.auth) this.props.history.push('/')
   }
 
   onChange = e => {
-    this.setState({[e.target.name]: event.target.value });
+    this.setState({[e.target.name]: e.target.value });
   }
 
   isValid = () => {
     const { errors, isValid } = validateInput(this.state);
-    if(!isValid) this.setState({ errors });
+    if(!isValid) {
+      this.setState({ errors });
+    }
     return isValid;
   }
 
   onSubmit = async (e) => {
-    this.setState({ errors: {}, isLoading: true });
     e.preventDefault();
-    const res = await this.props.signUpReq(this.state)
-    const errData = await res.json();
-    return errData && this.setState({errors: errData, isLoading: false })
+    if(this.isValid()){
+      this.setState({ errors: {}, isLoading: true });
+      const res = await this.props.signUpReq(this.state)
+      const requestResponse = await res.json();
+      if(requestResponse.success) {
+        this.setState({isLoading: false, auth: true})
+      } else {
+        this.setState({errors: requestResponse, isLoading: false });
+      }
+    }
   }
 
   render() {
@@ -43,9 +57,9 @@ class SignUp extends Component {
         <div className='row justify-content-md-center'>
           <div className='col-md-6 col-md-offset-2'>
             <form>
-              <FormInput field="Username" value={username} error={errors.username} onChange={this.onChange} />
-              <FormInput field="Email" value={email} error={errors.email} onChange={this.onChange} />
-              <FormInput field="Password" value={email} error={errors.password} type={password} onChange={this.onChange} />
+              <FormInput name="username" field="Username" value={username} error={errors.username} onChange={this.onChange} />
+              <FormInput name="email" field="Email" value={email} error={errors.email} onChange={this.onChange} />
+              <FormInput name="password" field="Password" value={password} error={errors.password} type={password} onChange={this.onChange} />
               <button disabled={this.state.isLoading} className='btn btn-primary' onClick={this.onSubmit}>
                 Submit
               </button>
@@ -59,6 +73,10 @@ class SignUp extends Component {
 
 SignUp.propTypes = {
  signUpReq: PropTypes.func.isRequired
+}
+
+SignUp.contextTypes = {
+  router: PropTypes.object
 }
 
 export default connect(null, { signUpReq })(SignUp);

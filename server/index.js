@@ -1,6 +1,5 @@
 import express from 'express';
 import path from 'path';
-// import bodyParser from 'body-parser';
 
 import webpack from 'webpack';
 import webpackMiddleware from 'webpack-dev-middleware';

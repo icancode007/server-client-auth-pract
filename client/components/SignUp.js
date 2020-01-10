@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { signUpReq } from '../actions/signUpReq';
+import { addFlashMessage } from '../actions/flashMessages';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { signUpReq } from '../actions/signUpReq';
 import FormInput from './FormInput';
 import classnames  from 'classnames';
 import validateInput from '../../server/shared/validator';
-import { withRouter } from "react-router-dom"
+import { withRouter } from "react-router-dom";
 
 class SignUp extends Component {
   state = {
@@ -36,11 +37,15 @@ class SignUp extends Component {
   onSubmit = async (e) => {
     e.preventDefault();
     if(this.isValid()){
+      const { signUpReq, addFlashMessage } = this.props
       this.setState({ errors: {}, isLoading: true });
-      const res = await this.props.signUpReq(this.state)
+
+      const res = await signUpReq(this.state)
       const requestResponse = await res.json();
+
       if(requestResponse.success) {
         this.setState({isLoading: false, auth: true})
+        addFlashMessage({ type: 'success', text: 'Welcome {}!'});
       } else {
         this.setState({errors: requestResponse, isLoading: false });
       }
@@ -72,11 +77,12 @@ class SignUp extends Component {
 }
 
 SignUp.propTypes = {
- signUpReq: PropTypes.func.isRequired
+ signUpReq: PropTypes.func.isRequired,
+ addFlashMessage: PropTypes.func.isRequired,
 }
 
 SignUp.contextTypes = {
   router: PropTypes.object
 }
 
-export default connect(null, { signUpReq })(SignUp);
+export default connect(null, { signUpReq, addFlashMessage })(SignUp);

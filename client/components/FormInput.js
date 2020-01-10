@@ -14,7 +14,7 @@ const FormInput = ({name, field, value, error, type, onChange}) => (
       placeholder={field}
       onChange={onChange}
     />
-  { error && <span className='help-block'>{error}</span>}
+    { error && <span className='help-block'>{error}</span>}
   </div>
 );
 

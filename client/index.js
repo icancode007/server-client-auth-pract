@@ -14,9 +14,10 @@ import SignIn from './components/SignIn';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import root from './reducers/root';
 
 const store = createStore(
-  (state = {}) => state,
+    root,
     applyMiddleware(thunk)
 )
 
